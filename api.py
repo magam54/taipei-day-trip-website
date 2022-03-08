@@ -20,18 +20,18 @@ def getAttractions():
     myconnect=mydb.get_connection()
     mycursor=myconnect.cursor()
     sql=('select `id`,`name`,`category`,`description`,`address`,`transport`,`mrt`,`latitude`,`longitude`,`image` from `attractions` where attractions.name like %s order by `id` ASC limit %s,%s')
-    values=(("%"+keyword+"%"),12*page,12)
+    values=(("%"+keyword+"%"),12*page,13)
     mycursor.execute(sql,values)
     myresult=mycursor.fetchall()
     myconnect.close()
     #資料庫資料處理
-    if len(myresult) <12 :
-        nextPage=None
-    else:
+    if len(myresult) == 13 :
         nextPage=page+1
+    else:
+        nextPage=None
     n=0
     mylist=[]
-    while n < len(myresult) : 
+    while n < len(myresult)-1 : 
         mydict={}
         mydict["id"]=myresult[n][0]
         mydict["name"]=myresult[n][1]
