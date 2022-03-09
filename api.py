@@ -4,11 +4,11 @@ import mysql.connector.pooling
 from connectionPool import mydb
 import re
 from werkzeug.exceptions import HTTPException
-from flask_cors import cross_origin
+from flask_socketio import SocketIO
 
 
 api = Blueprint('api',__name__)
-CORS(api)
+socketio = SocketIO(api, cors_allowed_origins='*')
 
 @api.errorhandler(500)
 def handle_Internal_serverError(event):
