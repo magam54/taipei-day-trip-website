@@ -1,14 +1,14 @@
 from flask import *
 from api import api
 from werkzeug.exceptions import HTTPException
-from flask_cors import CORS
+from flask_socketio import SocketIO
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.config['JSON_SORT_KEYS'] = False
 app.register_blueprint(api)
-CORS(app)
+socketio = SocketIO(app, cors_allowed_origins='*')
 
 # Pages
 @app.route("/")
