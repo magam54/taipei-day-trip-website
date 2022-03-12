@@ -19,7 +19,7 @@ def getAttractions():
     keyword=request.args.get("keyword",default="")
     myconnect=mydb.get_connection()
     mycursor=myconnect.cursor()
-    sql=('select `id`,`name`,`category`,`description`,`address`,`transport`,`mrt`,`latitude`,`longitude`,`image` from `attractions` where attractions.name like %s order by `id` ASC limit %s,%s')
+    sql=("select `id`,`name`,`category`,`description`,`address`,`transport`,`mrt`,`latitude`,`longitude`,`image` from `attractions` where attractions.name like %s order by `id` ASC limit %s,%s")
     values=(("%"+keyword+"%"),12*page,13)
     mycursor.execute(sql,values)
     myresult=mycursor.fetchall()
