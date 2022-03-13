@@ -1,0 +1,190 @@
+
+@import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
+body{
+    margin: 0px;
+    font-family:'Noto Sans TC', '微軟正黑體', sans-serif; 
+}
+.gridContainer{
+    display: grid;
+    grid-template-columns: auto 1200px auto;
+    grid-auto-rows: minmax(54px,auto) minmax(320px, auto) minmax(200px, auto) minmax(auto,104px);
+}
+.gridSearch{
+    display: grid;
+    grid-column: 1/4;
+    background-image: url("images/HerosectionDesktop.png");
+    background-size: 100% 100%;
+    grid-template-columns: auto 1200px auto;
+    grid-template-rows: 25% 15% 15% 15% 30%;
+    align-items: center;
+}
+p.title{
+    grid-column: 2/3;
+    grid-row: 2/3; 
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+}
+p.description{
+    grid-column: 2/3;
+    grid-row: 3/4;
+    font-size: 16px;
+    color: white;
+}
+.inputS{
+    grid-row: 4/5;
+    grid-column: 2/3;
+}
+input[type=text]{
+    height: 40px;
+    width: 30%;
+    border: 1px solid #FFFFFF;
+    border-top-left-radius:5px;
+    border-bottom-left-radius:5px;
+}
+::placeholder{
+    font-size: 16px;
+    font-weight: bold;
+}
+#manifier{
+    vertical-align: middle;
+    height: 46px;
+    width: 60px;
+    object-fit: scale-down;
+    background-color: #448899;
+    border-top-right-radius:5px;
+    border-bottom-right-radius:5px;
+}
+.gridNav{
+    display: grid;
+    grid-column: 2/3;
+    grid-template-columns:auto 8% 8%;
+    align-items: center;
+}
+.home{
+    font-size: 30px;
+    font-weight: bold;
+    color: #448899;
+}
+.nav1{
+    font-size: 16px;
+    color: #666666;
+}
+.nav2{
+    font-size: 16px;
+    color: #666666;
+}
+.gridList{
+    margin-top: 50px;
+    margin-bottom: 50px;
+    grid-column: 2/3;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-row: auto;
+    column-gap: 20px;
+    row-gap: 20px;
+    align-items: center;
+}
+.card{
+    border: 1px solid #E8E8E8;
+    border-radius: 5px;
+}
+.a{
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: gray;
+    padding-left: 10px;
+}
+.b{
+    display: inline;
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: gray;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    text-align: left;
+}
+.c{
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: gray;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    float: right;
+}
+img{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+}
+.footer{
+    display: grid;
+    grid-column: 1/4;
+    grid-row: auto;
+    align-items: center;
+    background-color: gray;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+/* 平板 */
+@media (max-width:1200px){
+    .gridContainer{
+        grid-template-columns: 10px auto ;
+    }
+    .gridSearch{
+        grid-template-columns: 10px auto;
+        background-size: cover;
+        background-position: 50%;
+    }
+    .gridNav{
+        grid-template-columns:auto 12% 12%;
+        grid-column: 2/4;
+    }
+    p.title{
+        grid-column: 2/3;
+    }
+    p.description{
+        grid-column: 2/3;
+    }
+    .inputS{
+        grid-column: 2/3;
+    }
+    .gridList{
+        grid-template-columns: repeat(2,1fr);
+        grid-column: 1/4;
+        margin: 20px;
+    }
+}
+/* 手機 */
+@media (max-width:600px){
+    .gridContainer{
+        grid-template-columns: 10px auto ;
+    }
+    .gridSearch{
+        grid-template-columns: 20px auto;
+        background-size: cover;
+        background-position: 59%;
+    }
+    .gridNav{
+        grid-template-columns:auto 20% 20%;
+    }
+    p.title{
+        grid-column: 2/3;
+    }
+    p.description{
+        grid-column: 2/3;
+    }
+    .inputS{
+        grid-column: 2/3;
+    }
+    input[type=text]{
+        width: 60%;
+    }
+    .gridList{
+        grid-template-columns: repeat(1,1fr);
+    }
