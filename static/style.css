@@ -7,7 +7,7 @@ body{
 .gridContainer{
     display: grid;
     grid-template-columns: auto 1200px auto;
-    grid-auto-rows: minmax(54px,auto) minmax(320px, auto) auto 104px;
+    grid-auto-rows: minmax(54px,auto) minmax(320px, auto) minmax(200px, auto) minmax(auto,104px);
 }
 .gridSearch{
     display: grid;
@@ -38,7 +38,7 @@ p.description{
 input[type=text]{
     height: 40px;
     width: 30%;
-    border: gray 1px solid;
+    border: 1px solid #FFFFFF;
     border-top-left-radius:5px;
     border-bottom-left-radius:5px;
 }
@@ -83,9 +83,10 @@ input[type=text]{
     grid-row: auto;
     column-gap: 20px;
     row-gap: 20px;
+    align-items: center;
 }
 .card{
-    border: 0.25px solid gray;
+    border: 1px solid #E8E8E8;
     border-radius: 5px;
 }
 .a{

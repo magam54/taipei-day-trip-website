@@ -25,15 +25,13 @@ function makebox(data){
     }
 }
 
-// 設定初始頁面網址
+// 設定初始頁面網址&偵測對象
 let url = new URL('http://18.139.199.228:3000/api/attractions?page=0')
-
-// 初始頁面且偵測滾動
 let footer = document.getElementById("footer")
 
+// 初始頁面且偵測滾動
 function callback(entries){
     if(entries[0].isIntersecting){
-        let keyword = document.getElementById("kw").value;
         fetch(url)
         .then(function(taipei){
             return taipei.json();
@@ -43,7 +41,6 @@ function callback(entries){
             if(p!=null){
                 makebox(data);
                 url.searchParams.set("page",p);
-                url.searchParams.set("keyword",keyword);
             }
             if(p==null){
                 makebox(data);
@@ -56,46 +53,73 @@ function callback(entries){
 const oberserver = new IntersectionObserver (callback)
 oberserver.observe(footer);
 
-// 搜尋功能
+// 關鍵字搜索偵測滾動
+function callbackKeyword(entries){
+    if(entries[0].isIntersecting){
+        let keyword = document.getElementById("kw").value;
+        url.searchParams.set("keyword",keyword);
+        fetch(url)
+        .then(function(taipei){
+            return taipei.json();
+        })
+        .then(function(data){
+            let p = data.nextPage
+            if(p!=null){
+                makebox(data);
+                url.searchParams.set("page",p);
+            }
+            if(p==null){
+                makebox(data);
+                oberserverKW.unobserve(footer)
+            }
+        })
+    }
+}
+
+const oberserverKW = new IntersectionObserver (callbackKeyword)
+
+// 關鍵字搜索 點擊放大鏡觸發
 document.getElementById("manifier").addEventListener("click",function(){
     keywordSearch()
 })
 
-// 關鍵字 如果按Enter的話
+// 關鍵字 按Enter觸發
 document.getElementById("kw").addEventListener("keyup",function(e){
     if(e.key==="Enter"){
         keywordSearch()
     }
 })
 
-// 搜尋功能封裝
+// 關鍵字搜尋
 function keywordSearch(){
     oberserver.unobserve(footer)
-        let keyword = document.getElementById("kw").value;
-        url.searchParams.set("page",0);
-        url.searchParams.set("keyword",keyword);
-        let gridLi = document.getElementById("gridLi")
-        fetch(url)
-        .then(function(taipei){
-            return taipei.json();
-        })
-        .then(function(data){
-            let len=data.data.length
-            if(len != 0){
-                gridLi.innerHTML=""
-                let p = data.nextPage
-                if(p!=null){
-                    oberserver.observe(footer);
-                }
-                if(p==null){
-                    makebox(data);
-                }
+    let keyword = document.getElementById("kw").value;
+    url.searchParams.set("page",0);
+    url.searchParams.set("keyword",keyword);
+    let gridLi = document.getElementById("gridLi")
+    fetch(url)
+    .then(function(taipei){
+        return taipei.json();
+    })
+    .then(function(data){
+        let len=data.data.length
+        if(len != 0){
+            gridLi.innerHTML=""
+            let p = data.nextPage
+            if(p!=null){
+                makebox(data);
+                url.searchParams.set("page",p);
+                oberserverKW.observe(footer);
             }
-            if(len == 0){
-                gridLi.innerHTML=""
-                let ms = document.createElement('p');
-                ms.textContent='找不到相關景點資料！'
-                gridLi.append(ms);
-            }   
-        })
+            if(p==null){
+                makebox(data);
+            }
+        }
+        if(len == 0){
+            gridLi.innerHTML=""
+            let ms = document.createElement('p');
+            ms.textContent='找不到相關景點資料！'
+            gridLi.append(ms);
+        }   
+    })
 }
