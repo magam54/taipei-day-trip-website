@@ -18,20 +18,20 @@ body{
     grid-template-rows: 25% 15% 15% 15% 30%;
     align-items: center;
 }
-p.title{
+.gridSearch p.title{
     grid-column: 2/3;
     grid-row: 2/3; 
     font-size: 28px;
     font-weight: bold;
     color: white;
 }
-p.description{
+.gridSearch p.description{
     grid-column: 2/3;
     grid-row: 3/4;
     font-size: 16px;
     color: white;
 }
-.inputS{
+.gridSearch div.inputS{
     grid-row: 4/5;
     grid-column: 2/3;
 }
@@ -57,20 +57,29 @@ input[type=text]{
 }
 .gridNav{
     display: grid;
-    grid-column: 2/3;
-    grid-template-columns:auto 8% 8%;
+    grid-column: 1/4;
+    grid-template-columns:auto 1000px 100px 100px auto;
     align-items: center;
+    border-bottom: solid 1px #E8E8E8;
 }
 .home{
+    display: grid;
+    grid-column: 2/3;
     font-size: 30px;
     font-weight: bold;
     color: #448899;
 }
 .nav1{
+    display: grid;
+    grid-column: 3/4;
+    justify-items: end;
     font-size: 16px;
     color: #666666;
 }
 .nav2{
+    display: grid;
+    grid-column: 4/5;
+    justify-items: end;
     font-size: 16px;
     color: #666666;
 }
@@ -84,6 +93,9 @@ input[type=text]{
     column-gap: 20px;
     row-gap: 20px;
     align-items: center;
+}
+a{
+    text-decoration: none;
 }
 .card{
     border: 1px solid #E8E8E8;
@@ -113,7 +125,7 @@ input[type=text]{
     padding-bottom: 10px;
     float: right;
 }
-img{
+.card img{
     width: 100%;
     height: 200px;
     object-fit: cover;
@@ -131,6 +143,7 @@ img{
     color: white;
     text-align: center;
 }
+
 /* 平板 */
 @media (max-width:1200px){
     .gridContainer{
@@ -142,8 +155,7 @@ img{
         background-position: 50%;
     }
     .gridNav{
-        grid-template-columns:auto 12% 12%;
-        grid-column: 2/4;
+        grid-template-columns:10px 1fr 100px 100px 10px;
     }
     p.title{
         grid-column: 2/3;
@@ -171,7 +183,7 @@ img{
         background-position: 59%;
     }
     .gridNav{
-        grid-template-columns:auto 20% 20%;
+        grid-template-columns:10px 250px 100px 100px 10px;
     }
     p.title{
         grid-column: 2/3;
@@ -188,3 +200,4 @@ img{
     .gridList{
         grid-template-columns: repeat(1,1fr);
     }
+}

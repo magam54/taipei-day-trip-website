@@ -5,8 +5,9 @@ function makebox(data){
         let title = data.data[n].name;
         let mrt = data.data[n].mrt;
         let cat = data.data[n].category;
+        let id =data.data[n].id;
         let images = data.data[n].images[0];
-        let gridLi = document.getElementById("gridLi");
+        let gridLi = document.getElementById('gridLi');
         let card = document.createElement('div');
             card.classList.add('card');
         let img = document.createElement('img');
@@ -20,8 +21,11 @@ function makebox(data){
         let span = document.createElement('span');
             span.classList.add('c');
             span.textContent=cat;
+        let link = document.createElement('a');
+        link.setAttribute('href','http://18.139.199.228:3000//attraction/'+id)
             card.append(img,p1,p2,span);
-            gridLi.append(card);
+            link.append(card);
+            gridLi.append(link);
     }
 }
 

@@ -3,7 +3,7 @@ from api import api
 from werkzeug.exceptions import HTTPException
 from flask_cors import CORS
 
-app=Flask(__name__)
+app=Flask(__name__, static_folder='static')
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.config['JSON_SORT_KEYS'] = False
@@ -24,4 +24,4 @@ def booking():
 def thankyou():
 	return render_template("thankyou.html")
 
-app.run(host="0.0.0.0",port=3000)
+app.run(host="0.0.0.0",port=3000, debug=True)

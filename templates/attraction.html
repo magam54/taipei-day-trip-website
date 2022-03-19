@@ -1,1 +1,61 @@
-Hello
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Taipei Trip</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='attractionstyle.css')}}">
+    <script src="{{url_for('static',filename='attractionscript.js')}}" defer></script>
+</head>
+<body>
+    <div class="gridContainer">
+        <div class="gridNav">
+            <div class="home">台北一日遊</div>
+            <div class="nav1">預定行程</div>
+            <div class="nav2">登入/註冊</div>
+        </div>
+        <div class="attracionContainer">
+            <div class="imageCarousel">
+                <button class="left" onclick="slides(-1)">&#10094;</button>
+                <button class="right" onclick="slides(1)">&#10095;</button>
+                <div class="dots">
+                </div>
+            </div>
+            <div class="imageDetail">
+                <p class="title"></p><p class="mrt"></p>
+                <div class="bookingCard">
+                    <p class="book">訂購導覽行程</p>
+                    <p class="intro">以此景點為中心的一日行程，帶您探索城市角落故事</p>
+                    <label for="start" class="date"><p class="date">選擇日期：
+                    <input type="date" id="start" name="trip-start" max="2023-12-31">
+                    </p>
+                    </label>
+                    <p>
+                    <span class="tour">選擇時間：</span>
+                    <label for="morinig" class="cost"><input type="radio" id="morinig" name="tourtime" value="morning" checked>上半天</label>
+                    <label for="afternoon" class="cost"><input type="radio" id="afternoon" name="tourtime" value="afternoon">下半天</label>
+                    </p>
+                    <p>
+                    <span class="cost">導覽費用：</span><span>新台幣 <span class="price">2000</span> 元</span>
+                    </p>
+                    <button class="send">開始預訂行程</button>
+                </div>
+            </div>
+            <div class="description">
+                <hr>
+                <p class="intro"></p>
+                <p class="place">景點地址：</p>
+
+                <p class="address"></p>
+                <p class="trans">交通方式：</p>
+                <p class="transhow"></p>
+            </div>
+        </div>
+        <div class="footer" id="footer">
+            <p class="foo">COPYRIGHT©台北一日遊</p>
+        </div>
+    </div>
+    
+</body>
+</html>
