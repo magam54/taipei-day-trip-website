@@ -22,7 +22,7 @@ function makebox(data){
             span.classList.add('c');
             span.textContent=cat;
         let link = document.createElement('a');
-        link.setAttribute('href','http://18.139.199.228:3000//attraction/'+id)
+        link.setAttribute('href','http://18.139.199.228:3000/attraction/'+id)
             card.append(img,p1,p2,span);
             link.append(card);
             gridLi.append(link);
