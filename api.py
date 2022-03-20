@@ -31,7 +31,7 @@ def getAttractions():
         nextPage=None
     n=0
     mylist=[]
-    while n < len(myresult)-1 : 
+    while n < len(myresult) and n < 12 : 
         mydict={}
         mydict["id"]=myresult[n][0]
         mydict["name"]=myresult[n][1]
