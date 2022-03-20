@@ -153,6 +153,33 @@ div>span{
     color: #666666;
 }
 
+label.cost input{
+    opacity: 0;
+    height: 0;
+    width:0;
+}
+span.radiobtn{
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: bottom;
+    margin-right: 5px;
+    height: 20px;
+    width: 20px;
+    background-color:white;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+span.radiobtn:hover{
+    background-color:lightgrey;
+  }
+.cost input:checked ~ .radiobtn{
+    background-color:#448899;
+}
+input[type=date]{
+    border: 0;
+    padding: 3px;
+}
+
 .attracionContainer p.intro{
     margin-bottom: 25px;
     line-height: 23px;
