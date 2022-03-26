@@ -36,7 +36,7 @@ body{
 }
 .nav_login{
     cursor: pointer;
-    display: grid;
+    display: none;
     grid-column: 4/5;
     justify-items: end;
     font-size: 16px;
@@ -44,7 +44,7 @@ body{
 }
 .nav_logout{
     cursor: pointer;
-    display: grid;
+    display: none;
     grid-column: 4/5;
     justify-items: end;
     font-size: 16px;

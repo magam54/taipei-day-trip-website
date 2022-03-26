@@ -82,6 +82,7 @@ body{
     color: #666666;
 }
 .nav_login{
+    display: none;
     cursor: pointer;
     grid-column: 4/5;
     justify-items: end;
@@ -89,6 +90,7 @@ body{
     color: #666666;
 }
 .nav_logout{
+    display: none;
     cursor: pointer;
     grid-column: 4/5;
     justify-items: end;
