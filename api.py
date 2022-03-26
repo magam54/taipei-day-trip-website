@@ -1,4 +1,5 @@
 from flask import *
+import jwt
 import mysql.connector
 import mysql.connector.pooling
 from connectionPool import mydb
@@ -8,10 +9,90 @@ from flask_cors import CORS
 
 api = Blueprint('api',__name__)
 CORS(api)
+key="myjwtsecret"
+
 
 @api.errorhandler(500)
 def handle_Internal_serverError(event):
-    return jsonify (error=True,message="出錯啦！") , 500
+    return jsonify (error=True,message="伺服器出錯啦！") , 500
+
+# 取得當前使用者登入資訊
+@api.route("/api/user", methods=["GET"])
+def getuser():
+    user = request.cookies.get('token')
+    if user is None:
+        return jsonify(data=None)
+    if user!=None:
+        decoded = jwt.decode(user, key, algorithms="HS256")
+        email=decoded['email']
+        myconnect=mydb.get_connection()
+        mycursor=myconnect.cursor()
+        sql="select `id`,`name`,`email` from `member` where member.email=%s"
+        values=(email,)
+        mycursor.execute(sql,values)
+        myresult=mycursor.fetchone()
+        myconnect.close()
+        datalist={}
+        id=myresult[0]
+        name=myresult[1]
+        email=myresult[2]
+        datalist['id']=id
+        datalist['name']=name
+        datalist['email']=email
+        return jsonify(data=datalist)
+
+# 註冊新使用者
+@api.route("/api/user", methods=["POST"])
+def register():
+    name=request.json['name']
+    email=request.json['email']
+    password=request.json['password']
+    myconnect=mydb.get_connection()
+    mycursor=myconnect.cursor()
+    sql=('select email from `member` where member.email=%s')
+    values=(email,)
+    mycursor.execute(sql,values)
+    myresult=mycursor.fetchall()
+    if not myresult:
+        mycursor=myconnect.cursor()
+        sql="insert into `member` (`name`,`email`,`password`) values (%s,%s,%s)"
+        values=(name,email,password)
+        mycursor.execute(sql,values)
+        myconnect.commit()
+        myconnect.close()
+        return jsonify(ok=True)
+    if myresult:
+        return jsonify(error=True,message="電子郵件重複")
+    if request.json==None:
+        return jsonify(error=True,message="註冊失敗")
+
+# 登入使用者帳戶
+@api.route("/api/user", methods=["PATCH"])
+def login():
+    email=request.json['email']
+    password=request.json['password']
+    myconnect=mydb.get_connection()
+    mycursor=myconnect.cursor()
+    sql="select `email`,`password` from `member` where member.email=%s and member.password=%s"
+    values=(email,password)
+    mycursor.execute(sql,values)
+    myresult=mycursor.fetchone()
+    myconnect.close()
+    if myresult:
+        encoded = jwt.encode({"email": email}, key, algorithm="HS256")
+        res = make_response(jsonify(ok=True))
+        res.set_cookie(key='token',value=encoded)
+        return res
+    if myresult==None:
+        return jsonify(error=True,message="帳號或密碼錯誤")
+        
+# 登出
+@api.route("/api/user", methods=["DELETE"])
+def logout():
+    res=make_response(jsonify(ok=True))
+    res.delete_cookie('token')
+    return res
+
 
 @api.route("/api/attractions", methods=["GET"])
 def getAttractions():
@@ -91,3 +172,4 @@ def getAttractionsID(attractionId):
         headlist={}
         headlist["data"]=mydict
         return jsonify(headlist)
+

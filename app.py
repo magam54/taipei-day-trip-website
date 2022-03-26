@@ -1,5 +1,6 @@
 from flask import *
 from api import api
+import jwt
 from werkzeug.exceptions import HTTPException
 from flask_cors import CORS
 
@@ -24,4 +25,4 @@ def booking():
 def thankyou():
 	return render_template("thankyou.html")
 
-app.run(host="0.0.0.0",port=3000, debug=True)
+app.run(host="0.0.0.0",port=3000,debug=True)

@@ -11,9 +11,10 @@
 <body>
     <div class="gridContainer">
         <div class="gridNav">
-            <div class="home">台北一日遊</div>
-            <div class="nav1">預定行程</div>
-            <div class="nav2">登入/註冊</div>
+            <div class="home"><a href="/">台北一日遊</a></div>
+            <div class="nav_booking">預定行程</div>
+            <div class="nav_login" id="nav_login">登入/註冊</div>
+            <div class="nav_logout" id="nav_logout">登出系統</div>
         </div>
         <div class="gridSearch">
              <p class="title">輕鬆享受台北一日悠閒</p>
@@ -27,5 +28,31 @@
             <p class="foo">COPYRIGHT©台北一日遊</p>
         </div>
     </div>
+    <div class="modal" id="modal">
+        <div class="modalcard_login" id="modalcard_login">
+            <div class="border"></div>
+            <div class="title">登入會員帳號</div><div class="closebtn" >&times;</div>
+            <form action="/api/user" method="PATCH" id="form_login">
+                <input type="text" name="email" id="email" placeholder="輸入電子信箱" required>
+                <input type="password" name="password" id="password" placeholder="輸入密碼" required>
+                <button type="submit">登入帳戶</button>
+                <span id='login_fail'></span>
+            </form>
+            <div class="reminder">還沒有帳戶？<a href="#" id="registerbtn">點此註冊</a></div>
+        </div>
+        <div class="modalcard_register" id="modalcard_register">
+            <div class="border"></div>
+            <div class="title">註冊會員帳號</div><div class="closebtn" >&times;</div>
+            <form action="/api/user" id="form_register" method="POST"> 
+                <input type="text" name="name" id="" placeholder="輸入姓名" required>
+                <input type="text" name="email" id="" placeholder="輸入電子信箱" required>
+                <input type="password" name="password" id="" placeholder="輸入密碼" required>
+                <button type="submit">註冊新帳戶</button>
+                <span id='register_mesg'></span>
+            </form>
+            <div class="reminder">已經有帳戶了？<a href="#" id="loginbtn">點此登入</a></div>
+        </div>
+    </div>
+
 </body>
 </html>
