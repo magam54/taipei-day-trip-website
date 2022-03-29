@@ -23,15 +23,28 @@ body{
     font-weight: bold;
     color: #448899;
 }
-.nav1{
+.home a{
+    color: inherit;
+    text-decoration: none;
+}
+.nav_booking{
     display: grid;
     grid-column: 3/4;
     justify-items: end;
     font-size: 16px;
     color: #666666;
 }
-.nav2{
-    display: grid;
+.nav_login{
+    cursor: pointer;
+    display: none;
+    grid-column: 4/5;
+    justify-items: end;
+    font-size: 16px;
+    color: #666666;
+}
+.nav_logout{
+    cursor: pointer;
+    display: none;
     grid-column: 4/5;
     justify-items: end;
     font-size: 16px;
@@ -212,6 +225,96 @@ p.date, span.tour, span.cost{
     font-weight: bold;
 }
 
+/* 登入框 */
+.modal{
+    visibility: hidden;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+}
+.modalcard_login{
+    display: none;
+    max-width: 340px;
+    height: 275px;
+    margin-top: 80px;
+    border-radius: 6px;
+    background-color: white;
+    border: none;
+}
+.modalcard_register{
+    display: none;
+    max-width: 340px;
+    height: 332px;
+    margin-top: 80px;
+    border-radius: 6px;
+    background-color: white;
+    border: none;
+}
+.border{
+    width: 340px;
+    height: 10px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
+}
+.modal .title{
+    color: #666666;
+    margin-top: 5px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+.modal .closebtn{
+    cursor: pointer;
+    position: relative;
+    top: -30px;
+    left: 90%;
+    font-size: 16px;
+    color: #666666;
+}
+form{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    top: -5%;
+}
+form input{
+    width: 295px;
+    height: 47px;
+    padding: 0;
+    padding-left: 15px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #CCCCCC;;
+}
+form button{
+    width: 312px;
+    height: 49px;
+    padding: 0px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    font-size: 19px;
+    background: #448899;
+}
+.reminder{
+    position: relative;
+    bottom: 5px;
+    text-align: center;
+    font-size: 16px;
+    color: #666666;
+    text-decoration: none;
+}
+#login_fail, #register_mesg{
+    color: tomato;
+}
 
 /* 平板 */
 @media (max-width:1200px){
@@ -230,7 +333,7 @@ p.date, span.tour, span.cost{
     }
 }
 /* 手機 */
-@media (max-width:600px){
+@media (max-width:670px){
     .gridContainer{
         grid-template-columns: 10px auto ;
     }
