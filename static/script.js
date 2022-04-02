@@ -128,9 +128,10 @@ function keywordSearch(){
     })
 }
 
+let data=null;
 async function getuser(){
     const res = await fetch('/api/user')
-    const data = await res.json()
+    data = await res.json()
     if (data.data==null){
         document.getElementById('nav_login').style.display="grid"
         document.getElementById('nav_logout').style.display="none"
@@ -142,6 +143,19 @@ async function getuser(){
 }
 getuser()
 
+
+// 預定行程按鈕
+document.getElementById('nav_booking').addEventListener("click",function(){
+    if (data==null){
+        document.getElementById('modal').style.visibility = "visible";
+        document.getElementById('modalcard_login').style.display = "block";
+    }
+    if (data!=null){
+        window.location.pathname="/booking";
+    }
+})
+
+// 登出登入
 document.getElementById('nav_login').addEventListener("click",function(){
     document.getElementById('modal').style.visibility = "visible";
     document.getElementById('modalcard_login').style.display = "block";

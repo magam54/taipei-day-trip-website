@@ -277,14 +277,14 @@ p.date, span.tour, span.cost{
     font-size: 16px;
     color: #666666;
 }
-form{
+#form_login, #form_register{
     position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     top: -5%;
 }
-form input{
+#form_login input, #form_register input{
     width: 295px;
     height: 47px;
     padding: 0;
@@ -293,7 +293,7 @@ form input{
     border-radius: 5px;
     border: 1px solid #CCCCCC;;
 }
-form button{
+#form_login button, #form_register button{
     width: 312px;
     height: 49px;
     padding: 0px;

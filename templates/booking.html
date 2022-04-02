@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Taipei Trip</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='bookingstyle.css')}}">
+    <script src="{{url_for('static',filename='bookingscript.js')}}" defer></script>
+    <script src="https://kit.fontawesome.com/e0ff7e3e76.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="gridContainer">
+        <div class="gridNav">
+            <div class="home"><a href="/">台北一日遊</a></div>
+            <div class="nav_booking" id="nav_booking">預定行程</div>
+            <div class="nav_login" id="nav_login">登入/註冊</div>
+            <div class="nav_logout" id="nav_logout">登出系統</div>
+        </div>
+
+        <div class="bookingDetail">
+            <p class="salute">您好，<span id="username"></span>，待預訂的行程如下：</p>
+
+            <div class="detailText">
+                <p class="atitle">台北一日遊：<span id="attractionName"></span></p>
+                <i class="fa-solid fa-trash-can" id="deletebtn"></i>
+                <p class="date">日期：<span id="attractionDate"></span></p>
+                <p class="time">時間：<span id="attractionTime"></span></p>
+                <p class="cost">費用：<span id="attractionPrice"></span></p>
+                <p class="address">地點：<span id="attractionAddress"></span></p>
+            </div>
+
+        <form action="" class="booking">
+        <div class="contact">
+            <hr/>
+            <p class="title">您的聯絡資訊</p>
+                <p class="">聯絡姓名：<input type="text" placeholder="請輸入姓名"></p>
+                <p class="">連絡信箱：<input type="email" placeholder="請輸入信箱"></p>
+                <p class="">手機號碼：<input type="number" placeholder="請輸入電話"></p>
+            <p class="reminder">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
+        </div>
+        <div class="creditcard">
+            <hr/>
+            <p class="title">信用卡付款資訊</p>
+                <p class="">卡片號碼：<input type="number" placeholder="請輸入卡號"></p>
+                <p class="">過期時間：<input type="text" placeholder="MM/YY"></p>
+                <p class="">驗證密碼：<input type="number" placeholder="請輸入驗證碼"></p>
+            <hr/>
+        </div>
+        <div class="total">
+
+            <p class="totalcost" id="totalcost"></p>
+            <button type="submit">確認訂購並付款</button>
+        </div>
+    </form>
+</div>
+
+        <div class="footer" id="footer">
+            <p class="foo">COPYRIGHT©台北一日遊</p>
+        </div>
+    </div>
+    <div class="modal" id="modal">
+        <div class="modalcard_login" id="modalcard_login">
+            <div class="border"></div>
+            <div class="title">登入會員帳號</div><div class="closebtn" >&times;</div>
+            <form action="/api/user" method="PATCH" id="form_login">
+                <input type="text" name="email" id="email" placeholder="輸入電子信箱" required>
+                <input type="password" name="password" id="password" placeholder="輸入密碼" required>
+                <button type="submit">登入帳戶</button>
+                <span id='login_fail'></span>
+            </form>
+            <div class="reminder">還沒有帳戶？<a href="#" id="registerbtn">點此註冊</a></div>
+        </div>
+        <div class="modalcard_register" id="modalcard_register">
+            <div class="border"></div>
+            <div class="title">註冊會員帳號</div><div class="closebtn" >&times;</div>
+            <form action="/api/user" id="form_register" method="POST"> 
+                <input type="text" name="name" id="" placeholder="輸入姓名" required>
+                <input type="text" name="email" id="" placeholder="輸入電子信箱" required>
+                <input type="password" name="password" id="" placeholder="輸入密碼" required>
+                <button type="submit">註冊新帳戶</button>
+                <span id='register_mesg'></span>
+            </form>
+            <div class="reminder">已經有帳戶了？<a href="#" id="loginbtn">點此登入</a></div>
+        </div>
+    </div>
+    
+</body>
+</html>

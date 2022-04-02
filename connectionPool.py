@@ -8,7 +8,7 @@ dbpassword=os.getenv('db_connectpass')
 
 mydb = mysql.connector.pooling.MySQLConnectionPool(
     pool_name="mypool",
-    pool_size=5,
+    pool_size=10,
     host="127.0.0.1",
     user="root",
     password=dbpassword,

@@ -1,120 +1,68 @@
-let pathVariable = window.location.pathname.split('/')[2];
-
-let url = "http://18.139.199.228:3000/api/attractions/"+pathVariable
-
-
-
-fetch(url).then((taipei)=>{
-    return taipei.json();
-})
-.then((data)=>{
-        let len=data.data.image.length;
-        for (n=0 ; n < len ; n++){
-            let title = data.data.name
-            let subtitle = data.data.category+" at "+data.data.mrt
-            let description=data.data.description
-            let address=data.data.address
-            let transport=data.data.transport
-            let image=data.data.image[n]
-            document.querySelector(".title").textContent=title
-            document.querySelector(".mrt").textContent=subtitle
-            document.querySelector(".description .intro").textContent=description
-            document.querySelector(".description .address").textContent=address
-            document.querySelector(".description .transhow").textContent=transport
-            let carousel = document.querySelector(".imageCarousel")
-            let btn = document.querySelector(".left")
-            let images = document.createElement('img');
-            images.src=image
-            carousel.insertBefore(images,btn);
-            let dots = document.querySelector(".dots")
-            let dot = document.createElement('span')
-            dot.classList.add("dot"+n)
-            dots.append(dot)
-
+async function getattraction(){
+    await getuser()
+    const res = await fetch('/api/booking')
+    const data = await res.json()
+    if (data.data==null){
+        let box=document.querySelector('.detailText')
+        box.innerHTML=""
+        document.querySelector('.booking').innerHTML=""
+        let msgbox=document.querySelector('.bookingDetail')
+        let msg=document.createElement('p')
+        msg.setAttribute('id','msg')
+        msg.textContent="目前沒有任何待預訂的行程"
+        msgbox.insertBefore(msg,box);
+    }
+    if (data.data!=null){
+        attractionName=data.data.attraction.name
+        date=data.data.date
+        time=data.data.time
+        price=data.data.price
+        address=data.data.attraction.address
+        image=data.data.attraction.image
+        let box=document.querySelector('.bookingDetail')
+        let detail=document.querySelector('.detailText')
+        let images = document.createElement('img');
+        images.src=image
+        box.insertBefore(images,detail);
+        document.getElementById('attractionName').textContent=attractionName
+        document.getElementById('attractionDate').textContent=date
+        document.getElementById('attractionPrice').textContent="新台幣 "+(price)+" 元"
+        document.getElementById('attractionAddress').textContent=address
+        document.getElementById('totalcost').textContent="總價"+"："+"新台幣 "+(price)+" 元"
+        if(time=="morning"){
+            time="早上9點到中午12點"
+            document.getElementById('attractionTime').textContent=time
         }
-        let image0 = document.getElementsByTagName('img').item(0);
-        image0.style.display='block'
-        let dot0 =document.querySelectorAll('span[class^="dot"]').item(0)
-        dot0.style.background="black"
-})
-
-// 輪播圖片
-let index = 1
-function slides(n){
-    let slideindex = index+n;
-    let length=document.getElementsByTagName('img').length;
-    let array=document.getElementsByTagName('img');
-    let dots=document.querySelectorAll('span[class^="dot"]')
-    if (slideindex>length){
-        slideindex=1;
-        index=0
+        if(time=="afternoon"){
+            time="下午2點到下午5點"
+            document.getElementById('attractionTime').textContent=time
+        }
     }
-    if (slideindex<=0){
-        index=length+1
-        slideindex=length
-    }
-    for(i=0;i<length;i++){
-        array[i].style.display='none';
-        dots[i].style.background="white"
-    }
-    array[slideindex-1].style.display='block';
-    dots[slideindex-1].style.background="black"
-    index=index+n ;
 }
-
-
-// 選擇時段
-document.getElementsByName('tourtime').forEach(radio=>{
-    radio.addEventListener('click',function(){
-        if(radio.value=="morning"){
-            document.querySelector(".price").textContent=2000
-        }
-        if(radio.value=="afternoon"){
-            document.querySelector(".price").textContent=2500
-        }
-    })
-})
+ getattraction()
 
 async function getuser(){
     const res = await fetch('/api/user')
     const data = await res.json()
     if (data.data==null){
-        document.getElementById('nav_login').style.display="grid"
-        document.getElementById('nav_logout').style.display="none"
+        window.location.pathname="/";
     }
     if (data.data!=null){
         document.getElementById('nav_login').style.display="none"
         document.getElementById('nav_logout').style.display="grid"
+        name=data.data.name
+        document.getElementById('username').textContent=name
     }
 }
-getuser()
 
-document.getElementById('bookingform').addEventListener("submit",function(e){
-    e.preventDefault()
-    let fd= new FormData(this)
-    let fdjson={};
-    for (pairs of fd.entries()){
-        fdjson[pairs[0]]=pairs[1];
-    }
-    fdjson['attractionId']=pathVariable
-    let price=document.getElementById('price').textContent
-    fdjson['price']=price
+// 刪除預定
+document.getElementById('deletebtn').addEventListener("click",function(){
     fetch('/api/booking',{
-        method:"POST",
-        body:JSON.stringify(fdjson),
-        headers:{
-            'content-type':'application/json'
-        }
+        method:"DELETE"
     })
-    .then(response=>response.json())
     .then(function(data){
-        if (data.error==true){
-            document.getElementById('modal').style.visibility = "visible";
-            document.getElementById('modalcard_login').style.display = "block";
-        }
-        if (data.ok==true){
-            window.location.pathname="/booking";
-        }
+        if(data.ok==true)
+            location.reload();
     })
 })
 
@@ -129,7 +77,7 @@ document.getElementById('nav_booking').addEventListener("click",function(){
     }
 })
 
-// 登入登出
+// 登出登入
 document.getElementById('nav_login').addEventListener("click",function(){
     document.getElementById('modal').style.visibility = "visible";
     document.getElementById('modalcard_login').style.display = "block";
@@ -149,7 +97,6 @@ document.querySelectorAll('.closebtn').forEach(item=>{
         document.getElementById('modalcard_register').style.display = "none"
     })
 })
-
 
 // 登入程序
 document.getElementById('form_login').addEventListener("submit",function(e){

@@ -16,6 +16,96 @@ key="myjwtsecret"
 def handle_Internal_serverError(event):
     return jsonify (error=True,message="伺服器出錯啦！") , 500
 
+# 預定功能
+@api.route("/api/booking", methods=["GET"])
+def getbooking():
+    user = request.cookies.get('token')
+    if user is None:
+        return jsonify(error=True,message="請登入")
+    if user!=None:
+        decoded = jwt.decode(user, key, algorithms="HS256")
+        email=decoded['email']
+        myconnect=mydb.get_connection()
+        mycursor=myconnect.cursor()
+        sql="select `attractions`.`id`,`attractions`.`name`,`address`,`image`,`date`,`time`,`cost` from `cart`,`member`,`attractions` where `cart`.`email`=%s and `cart`.`attractionId`=`attractions`.`id`"
+        values=(email,)
+        mycursor.execute(sql,values)
+        myresult=mycursor.fetchone()
+        # myconnect.close()
+        if myresult:
+            datalist={}
+            attractionlist={}
+            attractionlist['id']=myresult[0]
+            attractionlist['name']=myresult[1]
+            attractionlist['address']=myresult[2]
+            images=myresult[3]
+            imageString=re.sub(r"[\'\[\]]","",images)
+            image=list(filter(None,re.split(r".jpg|.JPG",imageString)))
+            attractionlist['image']=image[0]+".jpg"
+            datalist['date']=myresult[4]
+            datalist['time']=myresult[5]
+            datalist['price']=myresult[6]
+            datalist['attraction']=attractionlist
+            return jsonify (data=datalist)
+        if not myresult:
+            myconnect.close()
+            return jsonify(data=None)
+
+@api.route("/api/booking", methods=["POST"])
+def newbooking():
+    user = request.cookies.get('token')
+    if user is None:
+        return jsonify(error=True,message="請登入")
+    if user!=None:
+        decoded = jwt.decode(user, key, algorithms="HS256")
+        email=decoded['email']
+        attractionId=request.json['attractionId']
+        date=request.json['date']
+        time=request.json['tourtime']
+        price=request.json['price']
+        myconnect=mydb.get_connection()
+        mycursor=myconnect.cursor()
+        sql="select `cart`.`cartId` from `cart` where email=%s"
+        values=(email,)
+        mycursor.execute(sql,values)
+        myresult=mycursor.fetchall()
+        if not myresult:
+            mycursor=myconnect.cursor()
+            sql="insert into `cart` (`attractionId`,`date`,`time`,`cost`,`email`) values (%s,%s,%s,%s,%s)"
+            values=(attractionId,date,time,price,email)
+            mycursor.execute(sql,values)
+            myconnect.commit()
+            myconnect.close()
+            return jsonify(ok=True)
+        if myresult:
+            mycursor=myconnect.cursor()
+            sql="update `cart` set `attractionId`=%s,`date`=%s,`time`=%s,`cost`=%s,`email`=%s where `email`=%s"
+            values=(attractionId,date,time,price,email,email)
+            mycursor.execute(sql,values)
+            myconnect.commit()
+            myconnect.close()
+            return jsonify(ok=True)
+        else:
+            return jsonify(error=True,message="輸入錯誤")
+
+@api.route("/api/booking", methods=["DELETE"])
+def deletebooking():
+    user = request.cookies.get('token')
+    if user is None:
+        return jsonify(error=True,message="請登入")
+    if user!=None:
+        decoded = jwt.decode(user, key, algorithms="HS256")
+        email=decoded['email']
+        myconnect=mydb.get_connection()
+        mycursor=myconnect.cursor()
+        sql=('delete from `cart` where `email`=%s')
+        values=(email,)
+        mycursor.execute(sql,values)
+        myconnect.commit()
+        myconnect.close()
+        return jsonify(ok=True)
+
+
 # 取得當前使用者登入資訊
 @api.route("/api/user", methods=["GET"])
 def getuser():
@@ -26,12 +116,14 @@ def getuser():
         decoded = jwt.decode(user, key, algorithms="HS256")
         email=decoded['email']
         myconnect=mydb.get_connection()
+        # print("第二個",myconnect)
         mycursor=myconnect.cursor()
         sql="select `id`,`name`,`email` from `member` where member.email=%s"
         values=(email,)
         mycursor.execute(sql,values)
         myresult=mycursor.fetchone()
         myconnect.close()
+        # print("第二個",myconnect)
         datalist={}
         id=myresult[0]
         name=myresult[1]
