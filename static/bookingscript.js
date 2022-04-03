@@ -41,9 +41,11 @@ async function getattraction(){
 }
  getattraction()
 
+let user=null;
 async function getuser(){
     const res = await fetch('/api/user')
     const data = await res.json()
+    user=data.data
     if (data.data==null){
         window.location.pathname="/";
     }
@@ -68,11 +70,11 @@ document.getElementById('deletebtn').addEventListener("click",function(){
 
 // 預定行程按鈕
 document.getElementById('nav_booking').addEventListener("click",function(){
-    if (data==null){
+    if (user==null){
         document.getElementById('modal').style.visibility = "visible";
         document.getElementById('modalcard_login').style.display = "block";
     }
-    if (data!=null){
+    if (user!=null){
         window.location.pathname="/booking";
     }
 })

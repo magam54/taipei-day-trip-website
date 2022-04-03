@@ -1,7 +1,7 @@
 from flask import *
 import jwt
 import mysql.connector
-import mysql.connector.pooling
+from mysql.connector import pooling
 from connectionPool import mydb
 import re
 from werkzeug.exceptions import HTTPException
@@ -31,7 +31,7 @@ def getbooking():
         values=(email,)
         mycursor.execute(sql,values)
         myresult=mycursor.fetchone()
-        # myconnect.close()
+        myconnect.close()
         if myresult:
             datalist={}
             attractionlist={}
@@ -116,14 +116,12 @@ def getuser():
         decoded = jwt.decode(user, key, algorithms="HS256")
         email=decoded['email']
         myconnect=mydb.get_connection()
-        # print("第二個",myconnect)
         mycursor=myconnect.cursor()
         sql="select `id`,`name`,`email` from `member` where member.email=%s"
         values=(email,)
         mycursor.execute(sql,values)
         myresult=mycursor.fetchone()
         myconnect.close()
-        # print("第二個",myconnect)
         datalist={}
         id=myresult[0]
         name=myresult[1]

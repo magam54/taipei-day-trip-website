@@ -128,10 +128,11 @@ function keywordSearch(){
     })
 }
 
-let data=null;
+let user=null;
 async function getuser(){
     const res = await fetch('/api/user')
-    data = await res.json()
+    let data = await res.json()
+    user=data.data
     if (data.data==null){
         document.getElementById('nav_login').style.display="grid"
         document.getElementById('nav_logout').style.display="none"
@@ -146,11 +147,11 @@ getuser()
 
 // 預定行程按鈕
 document.getElementById('nav_booking').addEventListener("click",function(){
-    if (data==null){
+    if (user==null){
         document.getElementById('modal').style.visibility = "visible";
         document.getElementById('modalcard_login').style.display = "block";
     }
-    if (data!=null){
+    if (user!=null){
         window.location.pathname="/booking";
     }
 })
