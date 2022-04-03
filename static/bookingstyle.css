@@ -254,7 +254,7 @@ form button{
     }
     .bookingDetail{
         grid-template-columns: auto;
-        grid-template-rows: 1fr 1fr 0 0;
+        grid-template-rows: 1;
     }
     .bookingDetail div.detailText{
         grid-column: 2;

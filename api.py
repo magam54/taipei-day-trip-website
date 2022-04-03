@@ -31,7 +31,7 @@ def getbooking():
         values=(email,)
         mycursor.execute(sql,values)
         myresult=mycursor.fetchone()
-        myconnect.close()
+        # myconnect.close()
         if myresult:
             datalist={}
             attractionlist={}
