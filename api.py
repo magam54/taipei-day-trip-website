@@ -31,7 +31,7 @@ def getbooking():
         values=(email,)
         mycursor.execute(sql,values)
         myresult=mycursor.fetchone()
-        # myconnect.close()
+        myconnect.close()
         if myresult:
             datalist={}
             attractionlist={}
@@ -47,8 +47,7 @@ def getbooking():
             datalist['price']=myresult[6]
             datalist['attraction']=attractionlist
             return jsonify (data=datalist)
-        if not myresult:
-            myconnect.close()
+        else:
             return jsonify(data=None)
 
 @api.route("/api/booking", methods=["POST"])
@@ -69,7 +68,9 @@ def newbooking():
         values=(email,)
         mycursor.execute(sql,values)
         myresult=mycursor.fetchall()
+        myconnect.close()
         if not myresult:
+            myconnect=mydb.get_connection()
             mycursor=myconnect.cursor()
             sql="insert into `cart` (`attractionId`,`date`,`time`,`cost`,`email`) values (%s,%s,%s,%s,%s)"
             values=(attractionId,date,time,price,email)
@@ -77,7 +78,8 @@ def newbooking():
             myconnect.commit()
             myconnect.close()
             return jsonify(ok=True)
-        if myresult:
+        else:
+            myconnect=mydb.get_connection()
             mycursor=myconnect.cursor()
             sql="update `cart` set `attractionId`=%s,`date`=%s,`time`=%s,`cost`=%s,`email`=%s where `email`=%s"
             values=(attractionId,date,time,price,email,email)
@@ -85,8 +87,7 @@ def newbooking():
             myconnect.commit()
             myconnect.close()
             return jsonify(ok=True)
-        else:
-            return jsonify(error=True,message="輸入錯誤")
+
 
 @api.route("/api/booking", methods=["DELETE"])
 def deletebooking():
@@ -134,27 +135,32 @@ def getuser():
 # 註冊新使用者
 @api.route("/api/user", methods=["POST"])
 def register():
-    name=request.json['name']
-    email=request.json['email']
-    password=request.json['password']
-    myconnect=mydb.get_connection()
-    mycursor=myconnect.cursor()
-    sql=('select email from `member` where member.email=%s')
-    values=(email,)
-    mycursor.execute(sql,values)
-    myresult=mycursor.fetchall()
-    if not myresult:
-        mycursor=myconnect.cursor()
-        sql="insert into `member` (`name`,`email`,`password`) values (%s,%s,%s)"
-        values=(name,email,password)
-        mycursor.execute(sql,values)
-        myconnect.commit()
-        myconnect.close()
-        return jsonify(ok=True)
-    if myresult:
-        return jsonify(error=True,message="電子郵件重複")
     if request.json==None:
         return jsonify(error=True,message="註冊失敗")
+    else:
+        name=request.json['name']
+        email=request.json['email']
+        password=request.json['password']
+        myconnect=mydb.get_connection()
+        mycursor=myconnect.cursor()
+        sql=('select email from `member` where member.email=%s')
+        values=(email,)
+        mycursor.execute(sql,values)
+        myresult=mycursor.fetchone()
+        myconnect.close()
+        if not myresult:
+            myconnect=mydb.get_connection()
+            mycursor=myconnect.cursor()
+            sql="insert into `member` (`name`,`email`,`password`) values (%s,%s,%s)"
+            values=(name,email,password)
+            mycursor.execute(sql,values)
+            myconnect.commit()
+            myconnect.close()
+            return jsonify(ok=True)
+        else:
+            return jsonify(error=True,message="電子郵件重複")
+# 直接insert不用select? mysql設定unique 有error 加 rollback
+
 
 # 登入使用者帳戶
 @api.route("/api/user", methods=["PATCH"])
@@ -173,7 +179,7 @@ def login():
         res = make_response(jsonify(ok=True))
         res.set_cookie(key='token',value=encoded)
         return res
-    if myresult==None:
+    else:
         return jsonify(error=True,message="帳號或密碼錯誤")
         
 # 登出

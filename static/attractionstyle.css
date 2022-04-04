@@ -336,10 +336,10 @@ p.date, span.tour, span.cost{
 /* 手機 */
 @media (max-width:670px){
     .gridContainer{
-        grid-template-columns: 10px auto ;
+        grid-template-columns:auto ;
     }
     .gridNav{
-        grid-template-columns:10px 250px 100px 100px 10px;
+        grid-template-columns:5% 150px 1fr 1fr 5%;
     }
     .attracionContainer{
         display: block;

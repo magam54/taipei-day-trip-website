@@ -278,7 +278,7 @@ form button{
 /* 手機 */
 @media (max-width:670px){
     .gridContainer{
-        grid-template-columns: 10px auto ;
+        grid-template-columns:auto ;
     }
     .gridSearch{
         grid-template-columns: 20px auto;
@@ -286,7 +286,7 @@ form button{
         background-position: 59%;
     }
     .gridNav{
-        grid-template-columns:10px 250px 100px 100px 10px;
+        grid-template-columns:5% 150px 1fr 1fr 5%;
     }
     p.title{
         grid-column: 2/3;
