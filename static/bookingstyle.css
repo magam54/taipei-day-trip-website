@@ -65,23 +65,26 @@ body{
 
 /* 訂單頁面 */
 .bookingDetail{
-    grid-column: 2/4;
+    grid-column: 2;
     display: grid;
-    grid-template-columns: 10% 1fr 2fr;
-    justify-items: center;
+    grid-template-columns: 4fr 4fr 1fr;
+    justify-content: start;
     align-items: center;
 }
 
 .bookingDetail img{
-    grid-column: 2;
-    width: 85%;
+    grid-column: 1;
+    max-width: 100%;
     height: 80%;
+    align-self: start;
+    justify-self: center;
 }
 .bookingDetail div.detailText{
-    grid-column: 3;
+    grid-column: 2;
     grid-row: 2;
     justify-self: start;
     margin-left: 10px;
+    align-self: start;
 }
 .bookingDetail p{
     font-weight: bold;
@@ -91,7 +94,7 @@ body{
     font-weight: normal;
 }
 .bookingDetail p.salute, p.title, p.salute>span{
-    grid-column: 2/4;
+    grid-column: 1;
     color: gray;
     font-size: 19px;
     font-weight: bold;
@@ -107,17 +110,16 @@ body{
 }
 .fa-trash-can{
     cursor: pointer;
-    position: relative;
     color: gray;
     font-size: 20px;
-    right: -185%;
+    grid-column: 3;
+    align-self: start;
+
 }
 form.booking{
-    margin-top: 80px;
-    grid-column: 2/4;
-    display: grid;
-    grid-template-rows: 1fr 1fr auto;
-    justify-self: start;
+    grid-column: 1/4;
+    display: block;
+    justify-content: start;
 }
 .creditcard{
     grid-row: 2;
@@ -127,17 +129,17 @@ form.booking{
     grid-row: 3;
     text-align: end;
     color: #666666;
+
 }
 form hr{
-    width: 130%;
     border: 1px solid #E8E8E8;
 }
 form.booking button{
-    width: 100%;
+    width: 15%;
 }
 #msg{
-    grid-column: 2;
-    grid-row: 3;
+    grid-column: 1;
+    grid-row: 2;
     font-weight: none;
     justify-self: start;
 }
@@ -264,22 +266,30 @@ form button{
     }
     .bookingDetail p.salute, p.title, p.salute>span{
         grid-column: 2/4;
+        margin-bottom: 0px;
     }
     .bookingDetail img{
         grid-column: 2/4;
-        max-width: 85%;
-        max-height: 80%;
+        max-width: 340px;
+        height: 85%;
+        align-self: center;
     }
     .fa-trash-can{
-        right: -70%;
-        top: 90%;
+        grid-column: 2;
+        justify-self: end;
+        margin-right: 10px;
     }
     .total{
         grid-column: auto;
         margin-right: 10px;
+        margin-bottom: 30px;
+    }
+    form.booking{
+        grid-column: 2;
+        top: 0;
     }
     form hr{
-        width: 90%;
+        width: 95%;
         border: 1px solid #E8E8E8;
     }
     form input{
@@ -289,9 +299,10 @@ form button{
         width: 50%;
     }
     #msg{
+        grid-column: 2/4;
         grid-row: 2;
     }
     .footer{
-        grid-row:3 span;
+        grid-row:3/5;
     }
 }

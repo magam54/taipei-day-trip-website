@@ -11,6 +11,7 @@ async function getattraction(){
         msg.setAttribute('id','msg')
         msg.textContent="目前沒有任何待預訂的行程"
         msgbox.insertBefore(msg,box);
+        document.getElementById('deletebtn').style.display="none"
     }
     if (data.data!=null){
         attractionName=data.data.attraction.name
@@ -64,6 +65,7 @@ document.getElementById('deletebtn').addEventListener("click",function(){
     })
     .then(function(data){
         if(data.ok==true)
+            document.getElementById('deletebtn').style.display="none"
             location.reload();
     })
 })

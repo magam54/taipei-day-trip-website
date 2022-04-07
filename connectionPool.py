@@ -13,5 +13,6 @@ mydb = pooling.MySQLConnectionPool(
     host="127.0.0.1",
     user="root",
     password=dbpassword,
-    database="TaipeiAttractions"
+    database="TaipeiAttractions",
+    buffered=True
 )
