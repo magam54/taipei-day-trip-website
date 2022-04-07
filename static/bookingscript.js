@@ -3,6 +3,7 @@ async function getattraction(){
     const res = await fetch('/api/booking')
     const data = await res.json()
     if (data.data==null){
+        document.getElementById('bookingDetail').style.display="grid"
         let box=document.querySelector('.detailText')
         box.innerHTML=""
         document.querySelector('.booking').innerHTML=""
@@ -14,6 +15,7 @@ async function getattraction(){
         document.getElementById('deletebtn').style.display="none"
     }
     if (data.data!=null){
+        document.getElementById('bookingDetail').style.display="grid"
         attractionName=data.data.attraction.name
         date=data.data.date
         time=data.data.time

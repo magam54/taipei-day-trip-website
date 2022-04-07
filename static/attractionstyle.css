@@ -225,6 +225,9 @@ button.send{
 p.date, span.tour, span.cost{
     font-weight: bold;
 }
+#date{
+    background-color: #FFFFFF;
+}
 
 /* 登入框 */
 .modal{
