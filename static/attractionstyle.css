@@ -54,7 +54,7 @@ body{
 .footer{
     display: grid;
     grid-column: 1/4;
-    grid-row: auto;
+    grid-row: 3 span;
     align-items: center;
     background-color: gray;
     font-size: 16px;
