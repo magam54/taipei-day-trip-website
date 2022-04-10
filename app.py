@@ -5,6 +5,7 @@ from mysql.connector import pooling
 import jwt
 from werkzeug.exceptions import HTTPException
 from flask_cors import CORS
+import requests
 
 app=Flask(__name__, static_folder='static')
 app.config["JSON_AS_ASCII"]=False

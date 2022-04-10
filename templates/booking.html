@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{url_for('static',filename='bookingstyle.css')}}">
     <script src="{{url_for('static',filename='bookingscript.js')}}" defer></script>
     <script src="https://kit.fontawesome.com/e0ff7e3e76.js" crossorigin="anonymous"></script>
+    <script src="https://js.tappaysdk.com/tpdirect/v5.8.0"></script>
 </head>
 <body>
     <div class="gridContainer">
@@ -30,27 +31,26 @@
             </div>
             <i class="fa-solid fa-trash-can" id="deletebtn"></i>
 
-        <form action="" class="booking">
+        <form action="" class="booking" id="booking">
         <div class="contact">
             <hr/>
             <p class="title">您的聯絡資訊</p>
-                <p class="">聯絡姓名：<input type="text" placeholder="請輸入姓名"></p>
-                <p class="">連絡信箱：<input type="email" placeholder="請輸入信箱"></p>
-                <p class="">手機號碼：<input type="number" placeholder="請輸入電話"></p>
+                <p class="">聯絡姓名：<input type="text" name="name" placeholder="請輸入姓名" required></p>
+                <p class="">連絡信箱：<input type="email" name="email" placeholder="請輸入信箱" required></p>
+                <p class="">手機號碼：<input type="tel" name="number" placeholder="請輸入電話" required></p>
             <p class="reminder">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
         </div>
         <div class="creditcard">
             <hr/>
             <p class="title">信用卡付款資訊</p>
-                <p class="">卡片號碼：<input type="number" placeholder="請輸入卡號"></p>
-                <p class="">過期時間：<input type="text" placeholder="MM/YY"></p>
-                <p class="">驗證密碼：<input type="number" placeholder="請輸入驗證碼"></p>
+                <p class="tp">卡片號碼：<div class="tpfield" id="card-number"></div></p>
+                <p class="tp">過期時間：<div class="tpfield" id="card-expiration-date"></div></p>
+                <p class="tp">驗證密碼：<div class="tpfield" id="card-ccv"></div></p>
             <hr/>
         </div>
         <div class="total">
-
             <p class="totalcost" id="totalcost"></p>
-            <button type="submit">確認訂購並付款</button>
+            <button type="submit" id="booking_submit">確認訂購並付款</button>
         </div>
     </form>
 </div>

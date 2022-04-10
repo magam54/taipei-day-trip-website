@@ -1,7 +1,124 @@
+// global variales
+let user=null;
+let attractionDetail=null;
+
+
+// 第三方支付
+// require("dotenv").config();
+// console.log(process.env)
+TPDirect.setupSDK(124059,'app_KaB7jngVwlQjPP6i919J02aR2RZ6hhLsfZf1dNF7jiQt9Rkna2wQL2fxrnTj', 'sandbox');
+
+TPDirect.card.setup({
+    fields: {
+        number: {
+            element: '#card-number',
+            placeholder: '**** **** **** ****'
+        },
+        expirationDate: {
+            element: document.getElementById('card-expiration-date'),
+            placeholder: 'MM / YY'
+        },
+        ccv: {
+            element: '#card-ccv',
+            placeholder: '後三碼'
+        }
+    },
+    styles: {
+        'input': {
+            'color': 'gray'
+        },
+        ':focus': {
+            'color': 'black'
+        },
+        '.valid': {
+            'color': 'green'
+        },
+        '.invalid': {
+            'color': 'red'
+        },
+        '@media screen and (max-width: 400px)': {
+            'input': {
+                'color': 'orange'
+            }
+        }
+    }
+})
+
+// 確認資訊正確啟用按鈕
+TPDirect.card.onUpdate(function(update){
+    if (update.canGetPrime) {
+        document.getElementById("booking_submit").disabled = false;
+    } else {
+        document.getElementById("booking_submit").disabled = true;
+    }
+})
+
+// 送出資料
+let ordersURL='/api/orders'
+let paymentURL='https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime'
+
+document.getElementById('booking').addEventListener("submit",function(e){
+    e.preventDefault();
+    const tappayStatus = TPDirect.card.getTappayFieldsStatus()
+    if (tappayStatus.canGetPrime === false) {
+        alert('can not get prime')
+        return
+    }
+    TPDirect.card.getPrime((result) => {
+        if (result.status !== 0) {
+            console.log('交易失敗')
+        }
+        let prime=result.card.prime
+        bookDetail(prime)
+        .then(function(orderDetail){
+            fetch(ordersURL,{
+            method:"POST",
+            body:JSON.stringify(orderDetail),
+            headers:{
+                'content-type':'application/json',
+            }
+            })
+            .then(response=>response.json())
+            .then(function(data){
+                let ordernumber=data.data.number;
+                let url = new URL(window.location)
+                url.pathname="/thankyou"
+                url.searchParams.set("number",ordernumber);
+                window.location=url;
+            })
+        })
+        })
+    })
+
+
+async function bookDetail(data){
+    await getattraction()
+    let bookDetail={}
+    let orderDetail={}
+    let contactfd= new FormData(document.getElementById('booking'))
+    let contactfdjson={};
+    for (pairs of contactfd.entries()){
+            contactfdjson[pairs[0]]=pairs[1];
+    }
+    orderDetail['trip']=attractionDetail.data.attraction
+    orderDetail['price']=attractionDetail.data.price
+    orderDetail['date']=attractionDetail.data.date
+    orderDetail['time']=attractionDetail.data.time
+    bookDetail['prime']=data
+    bookDetail['contact']=contactfdjson
+    bookDetail['order']=orderDetail
+    return bookDetail
+}
+
+
+
+
+// 取得訂單資料
 async function getattraction(){
     await getuser()
     const res = await fetch('/api/booking')
     const data = await res.json()
+    attractionDetail=data
     if (data.data==null){
         document.getElementById('bookingDetail').style.display="grid"
         let box=document.querySelector('.detailText')
@@ -44,7 +161,6 @@ async function getattraction(){
 }
  getattraction()
 
-let user=null;
 async function getuser(){
     const res = await fetch('/api/user')
     const data = await res.json()

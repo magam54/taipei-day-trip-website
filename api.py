@@ -6,6 +6,8 @@ from connectionPool import mydb
 import re
 from werkzeug.exceptions import HTTPException
 from flask_cors import CORS
+import random
+import requests
 
 api = Blueprint('api',__name__)
 CORS(api)
@@ -15,6 +17,115 @@ key="myjwtsecret"
 @api.errorhandler(500)
 def handle_Internal_serverError(event):
     return jsonify (error=True,message="伺服器出錯啦！") , 500
+
+@api.route("/api/order/<ordernumber>", methods=["GET"])
+def getorder(ordernumber):
+    user = request.cookies.get('token')
+    if user is None:
+        return jsonify(error=True,message="請登入")
+    if user!=None:
+        decoded = jwt.decode(user, key, algorithms="HS256")
+        email=decoded['email']
+        myconnect=mydb.get_connection()
+        mycursor=myconnect.cursor()
+        sql=('select `orderId`,`cost`,`time`,`date`,`phone`,`paystatus`,`attractionId`,`order`.`email`,`member`.`name`,`attractions`.`name`,`address`,`image` from `order`,`attractions`,`member` where order.orderId = %s and `order`.`email`=%s')
+        values=(ordernumber,email)
+        mycursor.execute(sql,values)
+        myresult=mycursor.fetchone()
+        myconnect.close()
+        if myresult == None:
+            return jsonify(data=None)
+        else:
+            images=myresult[11]
+            #圖片字串處理
+            imageString=re.sub(r"[\'\[\]]","",images)
+            image=list(filter(None,re.split(r".jpg|.JPG",imageString)))
+            attractionlist={
+                "id":myresult[6],
+                "name":myresult[9],
+                "address":myresult[10],
+                "image":image[0]+".jpg"
+            }
+            triplist={
+                "attraction":attractionlist,
+                "date":myresult[3],
+                "time":myresult[2]
+            }
+            contactlist={
+                "name":myresult[8],
+                "email":myresult[7],
+                "phone":myresult[4]
+            }
+            orderlist={
+                "number":myresult[0],
+                "price":myresult[1],
+                "trip":triplist,
+                "contact":contactlist,
+                "status":myresult[5]
+            }
+            return jsonify(data=orderlist)
+
+@api.route("/api/orders", methods=["POST"])
+def sendorder():
+    user = request.cookies.get('token')
+    if user is None:
+        return jsonify(error=True,message="請登入")
+    if user!=None:
+        decoded = jwt.decode(user, key, algorithms="HS256")
+        email=decoded['email']
+        # 製作訂單號碼
+        orderResult={}
+        number=random.randint(100,999)
+        attractionId=request.json['order']['trip']['id']
+        usernumber=request.json['contact']['number']
+        ordernumber=str(attractionId)+str(usernumber)+str(number)
+        orderResult['number']=ordernumber
+        # 記錄訂單狀態
+        date=request.json['order']['date']
+        time=request.json['order']['time']
+        cost=request.json['order']['price']
+        myconnect=mydb.get_connection()
+        mycursor=myconnect.cursor()
+        ordersql="insert into `order` (`attractionId`,`date`,`time`,`cost`,`email`,`orderId`,`phone`,`paystatus`) values (%s,%s,%s,%s,%s,%s,%s,%s) "
+        ordervalues=(attractionId,date,time,cost,email,ordernumber,usernumber,1)
+        mycursor.execute(ordersql,ordervalues)
+        cartsql="delete from `cart` where `email`=%s"
+        cartvalues=(email,)
+        mycursor.execute(cartsql,cartvalues)
+        myconnect.commit()
+        myconnect.close()
+        # 進入付款程序
+        payurl='https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime'
+        payheaders={'Content-Type':'application/json','x-api-key':'partner_1ZGwfsVIBrUrUlqPl6D7MNJtlUAiW583BU7XdIH5udIH7kodFBmk0C7r'}
+        paybody={
+        "prime":request.json['prime'],
+        "partner_key":'partner_1ZGwfsVIBrUrUlqPl6D7MNJtlUAiW583BU7XdIH5udIH7kodFBmk0C7r',
+        "merchant_id": "magam54_TAISHIN",
+        "details":ordernumber,
+        "amount":request.json['order']['price'],
+        "cardholder": {
+        "phone_number":usernumber,
+        "name":request.json['contact']['name'],
+        "email":request.json['contact']['email']}
+        }
+        response=requests.post(payurl,json=paybody,headers=payheaders,timeout=90)
+        payres=response.json()
+        if payres['status'] == 0:
+            myconnect=mydb.get_connection()
+            mycursor=myconnect.cursor()
+            paysql="update `order` set `paystatus`=%s where orderId=%s"
+            payvalues=(0,ordernumber)
+            mycursor.execute(paysql,payvalues)
+            myconnect.commit()
+            myconnect.close()
+            paystatus={}
+            paystatus['status']=0
+            paystatus['msg']="付款成功"
+            orderResult['payment']=paystatus
+            return jsonify(data=orderResult)
+        else:
+            return jsonify(error=True,message="資料有誤，未付款")
+
 
 # 預定功能
 @api.route("/api/booking", methods=["GET"])
