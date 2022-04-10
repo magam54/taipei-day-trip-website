@@ -17,7 +17,8 @@ recordbtn.addEventListener('click',function(){
             document.getElementById('modal').style.visibility = "visible";
             document.getElementById('modalcard_login').style.display = "block";
         }
-        if (data!=null){attraction=data.data.trip.attraction.name
+        if (data!=null){
+            attraction=data.data.trip.attraction.name
             price=data.data.price
             date=data.data.trip.date
             time=data.data.trip.time

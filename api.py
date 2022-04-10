@@ -28,7 +28,7 @@ def getorder(ordernumber):
         email=decoded['email']
         myconnect=mydb.get_connection()
         mycursor=myconnect.cursor()
-        sql=('select `orderId`,`cost`,`time`,`date`,`phone`,`paystatus`,`attractionId`,`order`.`email`,`member`.`name`,`attractions`.`name`,`address`,`image` from `order`,`attractions`,`member` where order.orderId = %s and `order`.`email`=%s')
+        sql=('select `orderId`,`cost`,`time`,`date`,`phone`,`paystatus`,`attractionId`,`order`.`email`,`member`.`name`,`attractions`.`name`,`address`,`image` from `order`,`attractions`,`member` where order.orderId = %s and `order`.`email`=%s and `order`.`attractionId`=`attractions`.`id`')
         values=(ordernumber,email)
         mycursor.execute(sql,values)
         myresult=mycursor.fetchone()
