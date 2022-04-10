@@ -3,6 +3,7 @@ let url = new URLSearchParams(window.location.search)
 let ordernumber=url.get('number')
 document.getElementById('ordernumber').textContent=ordernumber;
 
+// 訂單明細
 let recordbtn=document.querySelector('.fa-suitcase-rolling')
 recordbtn.addEventListener('click',function(){
     fetch('/api/order/'+ordernumber,{
