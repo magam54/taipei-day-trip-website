@@ -75,9 +75,11 @@ document.getElementsByName('tourtime').forEach(radio=>{
     })
 })
 
+let user=null;
 async function getuser(){
     const res = await fetch('/api/user')
-    const data = await res.json()
+    let data = await res.json()
+    user=data.data
     if (data.data==null){
         document.getElementById('nav_login').style.display="grid"
         document.getElementById('nav_logout').style.display="none"
@@ -89,6 +91,47 @@ async function getuser(){
 }
 getuser()
 
+document.getElementById('bookingform').addEventListener("submit",function(e){
+    e.preventDefault()
+    let fd= new FormData(this)
+    let fdjson={};
+    for (pairs of fd.entries()){
+        fdjson[pairs[0]]=pairs[1];
+    }
+    fdjson['attractionId']=pathVariable
+    let price=document.getElementById('price').textContent
+    fdjson['price']=price
+    fetch('/api/booking',{
+        method:"POST",
+        body:JSON.stringify(fdjson),
+        headers:{
+            'content-type':'application/json'
+        }
+    })
+    .then(response=>response.json())
+    .then(function(data){
+        if (data.error==true){
+            document.getElementById('modal').style.visibility = "visible";
+            document.getElementById('modalcard_login').style.display = "block";
+        }
+        if (data.ok==true){
+            window.location.pathname="/booking";
+        }
+    })
+})
+
+// 預定行程按鈕
+document.getElementById('nav_booking').addEventListener("click",function(){
+    if (user==null){
+        document.getElementById('modal').style.visibility = "visible";
+        document.getElementById('modalcard_login').style.display = "block";
+    }
+    if (user!=null){
+        window.location.pathname="/booking";
+    }
+})
+
+// 登入登出
 document.getElementById('nav_login').addEventListener("click",function(){
     document.getElementById('modal').style.visibility = "visible";
     document.getElementById('modalcard_login').style.display = "block";
@@ -108,6 +151,7 @@ document.querySelectorAll('.closebtn').forEach(item=>{
         document.getElementById('modalcard_register').style.display = "none"
     })
 })
+
 
 // 登入程序
 document.getElementById('form_login').addEventListener("submit",function(e){

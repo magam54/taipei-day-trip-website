@@ -12,7 +12,7 @@
     <div class="gridContainer">
         <div class="gridNav">
             <div class="home"><a href="/">台北一日遊</a></div>
-            <div class="nav_booking">預定行程</div>
+            <div class="nav_booking" id="nav_booking">預定行程</div>
             <div class="nav_login" id="nav_login">登入/註冊</div>
             <div class="nav_logout" id="nav_logout">登出系統</div>
         </div>
@@ -26,10 +26,11 @@
             <div class="imageDetail">
                 <p class="title"></p><p class="mrt"></p>
                 <div class="bookingCard">
+                    <form action="/booking" id="bookingform" method="POST">
                     <p class="book">訂購導覽行程</p>
                     <p class="intro">以此景點為中心的一日行程，帶您探索城市角落故事</p>
                     <label for="start" class="date"><p class="date">選擇日期：
-                    <input type="date" id="start" name="trip-start" max="2023-12-31">
+                    <input type="date" id="date" name="date" max="2023-12-31" required>
                     </p>
                     </label>
                     <p>
@@ -38,9 +39,10 @@
                     <label for="afternoon" class="cost"><input type="radio" id="afternoon" name="tourtime" value="afternoon"><span class="radiobtn"></span>下半天</label>
                     </p>
                     <p>
-                    <span class="cost">導覽費用：</span><span>新台幣 <span class="price">2000</span> 元</span>
+                    <span class="cost">導覽費用：</span><span>新台幣 <span class="price" id="price">2000</span> 元</span>
                     </p>
                     <button class="send">開始預訂行程</button>
+                    </form>
                 </div>
             </div>
             <div class="description">

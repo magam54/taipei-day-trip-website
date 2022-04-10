@@ -28,6 +28,7 @@ body{
     text-decoration: none;
 }
 .nav_booking{
+    cursor: pointer;
     display: grid;
     grid-column: 3/4;
     justify-items: end;
@@ -53,7 +54,7 @@ body{
 .footer{
     display: grid;
     grid-column: 1/4;
-    grid-row: auto;
+    grid-row: 3 span;
     align-items: center;
     background-color: gray;
     font-size: 16px;
@@ -224,6 +225,9 @@ button.send{
 p.date, span.tour, span.cost{
     font-weight: bold;
 }
+#date{
+    background-color: #FFFFFF;
+}
 
 /* 登入框 */
 .modal{
@@ -277,14 +281,14 @@ p.date, span.tour, span.cost{
     font-size: 16px;
     color: #666666;
 }
-form{
+#form_login, #form_register{
     position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     top: -5%;
 }
-form input{
+#form_login input, #form_register input{
     width: 295px;
     height: 47px;
     padding: 0;
@@ -293,7 +297,7 @@ form input{
     border-radius: 5px;
     border: 1px solid #CCCCCC;;
 }
-form button{
+#form_login button, #form_register button{
     width: 312px;
     height: 49px;
     padding: 0px;
@@ -335,10 +339,10 @@ form button{
 /* 手機 */
 @media (max-width:670px){
     .gridContainer{
-        grid-template-columns: 10px auto ;
+        grid-template-columns:auto ;
     }
     .gridNav{
-        grid-template-columns:10px 250px 100px 100px 10px;
+        grid-template-columns:5% 150px 1fr 1fr 5%;
     }
     .attracionContainer{
         display: block;
