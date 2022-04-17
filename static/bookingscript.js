@@ -4,9 +4,16 @@ let attractionDetail=null;
 
 
 // 第三方支付
-// require("dotenv").config();
-// console.log(process.env)
-TPDirect.setupSDK(124059,'app_KaB7jngVwlQjPP6i919J02aR2RZ6hhLsfZf1dNF7jiQt9Rkna2wQL2fxrnTj', 'sandbox');
+fetch('/api/key',{
+    method:"POST"})
+    .then(function(key){
+        return key.json()
+    })
+    .then(function(keyvalue){
+        partnerID=keyvalue[0]
+        key=keyvalue[1]
+        TPDirect.setupSDK(partnerID,key, 'sandbox');
+    })
 
 TPDirect.card.setup({
     fields: {

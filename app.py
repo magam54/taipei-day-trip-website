@@ -1,5 +1,5 @@
 from flask import *
-from api import api
+from api_controller import api
 import mysql.connector
 from mysql.connector import pooling
 import jwt
