@@ -1,5 +1,6 @@
 # pass
 .env
+config.js
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
